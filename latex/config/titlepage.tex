@@ -1,0 +1,57 @@
+\begin{titlepage}
+    \begin{center}
+      \makeatletter 
+        \begin{figure}[!htb]
+          \centering
+          
+          \ifx\@secondlogo\none
+            \begin{minipage}{0.42\textwidth}
+            \centering       
+            \includegraphics[width=\linewidth]{\@logo}
+            \end{minipage}
+          \else
+            \begin{minipage}{0.42\textwidth}
+            \centering       
+            \includegraphics[width=\linewidth]{\@logo}
+            \end{minipage}
+            \hspace{1cm}
+            \begin{minipage}{0.42\textwidth}
+            \centering       
+            \includegraphics[width=\linewidth]{\@secondlogo}
+            \end{minipage}
+          \fi
+
+        \end{figure}
+      \makeatother
+      \vspace*{0.25cm}
+
+        \maketitle
+
+        \vspace{2cm}
+        \large 
+        %\textbf{Keywords}:\\
+        \makeatletter
+        \textbf{\@keywords}
+        \makeatother
+        
+        \vspace*{\fill}
+        \normalsize
+        Authors: \\
+        \vspace{0.5cm}
+        \centering
+        \makeatletter
+        \begin{tabular}{l c r}
+        \ifx\@firstsupervisor\none  \else \hspace{0.5cm}  \@firstsupervisor       & \hspace{0.25cm}-\hspace{0.25cm} &  \@firstsupervisorrole \\ \fi 
+        \ifx\@secondsupervisor\none \else \hspace{0.5cm}  \@secondsupervisor      & \hspace{0.25cm}-\hspace{0.25cm} &  \@secondsupervisorrole \\ \fi
+        \ifx\@thirdsupervisor\none \else \hspace{0.5cm}  \@thirdsupervisor       & \hspace{0.25cm}-\hspace{0.25cm} &  \@thirdsupervisorrole \\ \fi 
+        \ifx\@fourthsupervisor\none \else \hspace{0.5cm}  \@fourthsupervisor      & \hspace{0.25cm}-\hspace{0.25cm} &  \@fourthsupervisorrole \\ \fi 
+        \ifx\@fifthsupervisor\none \else \hspace{0.5cm}  \@fifthsupervisor       & \hspace{0.25cm}-\hspace{0.25cm} &  \@fifthsupervisorrole \\ \fi 
+        \end{tabular}
+        \makeatother
+        
+    \end{center}
+\end{titlepage}
+
+\thispagestyle{empty}
+\cleardoublepage
+

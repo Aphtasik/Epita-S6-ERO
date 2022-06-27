@@ -6,7 +6,7 @@ qui permette d'avoir une vue sur chaque aretes de notre graphe (vertex cover pro
 ## Conditions
 - si deux noeud sont relies la route est droite
 
-# Iterations
+# Iterations:
 1. on calcule tous les points d'interets qui nous premettraient d'avoir une
 vision sur toute les aretes
 2. le drone parcourt l'ensemble des noeuds trouve de proche en proche jusqu'a
@@ -37,3 +37,14 @@ nb du sommet, puis on reparcours tout et on vire les sommets dont les aretes
 possede un autre marquage que le sommet lui meme.
 3. soit on rajoute des noeuds aux virages soit on considere que le drone peut
 voir apres le virage
+
+# Iterations 2:
+1. on identifie les emplacement ou la route n'est pas droite et on rajoute un
+sommet pour avoir deux routes droite
+2. on calcule tous les points d'interets qui nous premettraient d'avoir une
+vision sur toute les aretes
+3. le drone parcourt l'ensemble des noeuds trouve de proche en proche jusqu'a
+avoir tout visite.
+4. On colorie le graphe au fur et a mesure du parcours du drone.
+
+

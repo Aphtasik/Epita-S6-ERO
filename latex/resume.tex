@@ -1,0 +1,129 @@
+\documentclass[12pt, twoside]{report}  
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, width=170mm,top=25mm,bottom=15mm]{geometry}
+
+
+\usepackage{graphicx}    
+\graphicspath{{figs/}} 
+
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}  
+\usepackage{amsmath}  
+\usepackage{amsfonts}
+\usepackage{amssymb}   
+\usepackage{amsthm}
+\usepackage{thmtools}
+\usepackage{indentfirst} 
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{titlesec, color}
+\usepackage{ifthen}
+\usepackage{etoolbox}
+
+
+\input{config/settings.tex}
+
+
+%title
+\title{Élement de recherche opérationnelle}
+\subtitle{Déneiger Montréal}
+\author{Marc Plantevit}
+\date{\today}
+
+%keyword
+
+%logo
+\logo{./figs/Epita.png}
+%\secondlogo{figs/logo/su.png}  % optional field
+
+%supervisors - each one of these fields are optional
+\firstsupervisor{Tristan Denis}
+\firstsupervisorrole{Drone}
+
+\secondsupervisor{Mathis Guilbaud}
+\secondsupervisorrole{Drone}
+
+\thirdsupervisor{Lea Cruciani}
+\thirdsupervisorrole{Chasse neige}
+
+\fourthsupervisor{Alexandre Gautier}
+\fourthsupervisorrole{Chasse neige}
+
+\fifthsupervisor{Adrien Lorge}
+\fifthsupervisorrole{Chasse neige}
+
+
+\begin{document}
+
+\input{config/titlepage.tex}
+
+\newgeometry{width=140mm,top=25mm,bottom=25mm}
+\tableofcontents
+
+
+\newgeometry{width=170mm,top=35mm,bottom=35mm}
+\pagestyle{plain}
+
+\chapter{Introduction}\label{chp:intro}
+
+Dans le cadre des fortes chutes de neiges à Montréal, il nous a été demandé de
+trouver une solution pour déneiger efficacement la ville. Pour cela, nous avons
+à notre disposition un drone, qui nous sert à déterminer les zones à déneiger, 
+ainsi que qu'un nombre limité de matériel et de personnel.\\
+Afin de résoudre ce problème, nous travaillerons avec une représentation sous
+forme de graphe de la ville.
+
+\chapter{Le drone}\label{chp:drone}
+\section{Problèmes}
+Il nous a donc fallu trouver une méthode pour que le drone vérifie efficacement
+l'état de toutes les routes de Montréal.
+\section{Première solution}
+
+
+Nous sommes partis du principe que le drone ne pouvait déterminer l'état d'une
+route que s'il la parcourait entièrement. La méthode que nous avons privilégié
+est celle du chemin Hamiltonien (chemin passant par toutes les arrêtes d'un
+graphe). Dans le cas où notre graphe ne contenait pas de chamin Hamiltonien, 
+nous rajoutions des arrêtes en partant du principe que le drone peut voler au
+dessus des bâtiments.
+\subsection{Les limites}
+
+
+Premièrement, nous n'utilisons pas toutes les ressources du drone. En effet,
+celui-ci peut analyser les rues sans avoir à les survoler directement. Cela
+induit donc une distance parcourue inutilement élevée, et donc une perte de
+temps et d'argent conséquente.\\
+De plus, trouver un chemin Hamiltonien dans un graphe est très coûteux et
+la solution de rajouter des arrêtes complexifie encore plus le problème.
+
+
+\section{Deuxième solution}
+
+
+Pour cette solution, nous sommes parties du principe que le drone peut analyser
+les rues simplement en étant à une de ses extrémité. Cette solution s'apparente
+à trouver une solution au problème de couverture de graphe par sommets. Pour
+trouver une solution viable nous 
+\bibliographystyle{ieeetr}  
+\bibliography{sources}
+
+\appendix
+\chapter{Your appendix}\label{apx:morestuff}
+Aenean sed dapibus quam. 
+Sed aliquam mattis varius. 
+Vestibulum tortor dui, interdum ut nisi sit amet, feugiat pharetra dolor. 
+Suspendisse faucibus, purus sit amet mollis volutpat, tellus arcu condimentum arcu, sit amet ullamcorper dui orci ac erat. 
+Vestibulum imperdiet ex quis nunc fringilla, rutrum viverra libero finibus. 
+Pellentesque blandit elit est, a venenatis ligula vulputate ut. 
+Phasellus in ipsum est. Donec aliquam ligula tristique enim condimentum, sed fringilla augue interdum. 
+Pellentesque accumsan, orci at rutrum consequat, risus sapien scelerisque lectus, in dapibus leo nunc a est. Vestibulum libero tellus, tempor non facilisis eget, rutrum quis elit.
+Proin suscipit nec massa at euismod. Vivamus aliquam diam bibendum laoreet auctor.
+Proin sit amet ornare nunc, eget faucibus odio. 
+Pellentesque pretium ac ante pharetra efficitur. 
+Ut semper ipsum sed nisl finibus bibendum. Donec lobortis sagittis ex, in pretium est feugiat vitae. 
+
+
+\end{document}

@@ -52,5 +52,42 @@ def cleaning_graph(graph):
                     to_keep.append(edge[0])
     return to_keep
 
+def compute_distance(graph, node_a, node_b):
+    # TODO:
+    return 42;
+
+def find_best_path(int_nodes, graph):
+    """
+    find the best path for the drone between all interesting nodes
+    int_nodes represent a list of all interesting nodes 
+    return a list ordered by closest interesting nodes
+    """
+    M = [ False ] * len(int_nodes)   
+    M[0] = True
+    nodes = [i for i in int_nodes]
+    curr_node = 0
+    path = [0]
+    miniind = 1
+    for _ in range(len(nodes) - 1):
+        mini = float('inf')
+        for node in nodes:
+            distance = compute_distance(graph, int_nodes[curr_node], int_nodes[node])
+            if (mini > distance and not M[node]):
+                mini = distance 
+                miniind = node 
+        path.append(int_nodes[miniind])
+        M[miniind] = True;
+        curr_node = miniind
+    return path
+
+
+
+
+
+
+
+
+
+
 
 

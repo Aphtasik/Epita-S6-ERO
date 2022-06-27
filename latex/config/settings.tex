@@ -1,0 +1,147 @@
+% blue from the logo
+\definecolor{mpblue}{HTML}{005E9E}
+
+
+% Set indentation
+\setlength\parindent{0pt}
+
+
+% Custom title commands
+\titleformat{\chapter}
+{\color{mpblue}\normalfont\huge\bfseries}
+{\color{mpblue}\thechapter.}{1em}{}
+\titlespacing*{\chapter}
+{0pt}{3.3ex}{3.3ex}
+
+\titleformat{\section}
+{\color{mpblue}\normalfont\Large\bfseries}
+{\color{mpblue}\thesection.}{1em}{}
+\titlespacing*{\section}
+{0pt}{3.3ex}{3.3ex}
+
+\titleformat{\subsection}
+{\color{mpblue}\normalfont\large\bfseries}
+{\color{mpblue}\thesubsection.}{1em}{}
+\titlespacing*{\subsection}
+{0pt}{3.3ex}{3.3ex}
+
+
+% Custom headers and footers
+\pagestyle{plain}
+
+
+% maths theorem fields and derivates
+\declaretheoremstyle[
+  headfont=\color{mpblue}\normalfont\bfseries,
+  bodyfont=\color{black}\normalfont\itshape,
+]{colored}
+
+\theoremstyle{colored}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{definition}{Definition}[section] 
+\newtheorem{lemma}{Lemma}[section] 
+
+
+% Usefull math operators
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\argmin}{arg\,min}
+\DeclareMathOperator{\argmax}{arg\,max}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\sign}{sign}
+
+
+% Fields for title page
+\makeatletter
+\newcommand\subtitle[1]{\renewcommand\@subtitle{#1}}
+\newcommand\@subtitle{}
+\makeatother
+
+\makeatletter
+\newcommand\keywords[1]{\renewcommand\@keywords{#1}}
+\newcommand\@keywords{}
+\makeatother
+
+\makeatletter
+\newcommand\logo[1]{\renewcommand\@logo{#1}}
+\newcommand\@logo{}
+\makeatother
+
+\makeatletter
+\newcommand\secondlogo[1]{\renewcommand\@secondlogo{#1}}
+\newcommand\@secondlogo{None}
+\makeatother
+
+\newcommand\none{None}
+\newcommand\includegraphicsifexists[2]{\IfFileExists{#2}{\includegraphics[#1]{#2}}}
+
+% supervisors and roles
+\makeatletter
+\newcommand\firstsupervisor[1]{\renewcommand\@firstsupervisor{#1}}
+\newcommand\@firstsupervisor{None}
+\makeatother
+
+\makeatletter
+\newcommand\secondsupervisor[1]{\renewcommand\@secondsupervisor{#1}}
+\newcommand\@secondsupervisor{None}
+\makeatother
+
+\makeatletter
+\newcommand\thirdsupervisor[1]{\renewcommand\@thirdsupervisor{#1}}
+\newcommand\@thirdsupervisor{None}
+\makeatother
+
+\makeatletter
+\newcommand\fourthsupervisor[1]{\renewcommand\@fourthsupervisor{#1}}
+\newcommand\@fourthsupervisor{None}
+\makeatother
+
+\makeatletter
+\newcommand\fifthsupervisor[1]{\renewcommand\@fifthsupervisor{#1}}
+\newcommand\@fifthsupervisor{None}
+\makeatother
+
+
+\makeatletter
+\newcommand\firstsupervisorrole[1]{\renewcommand\@firstsupervisorrole{#1}}
+\newcommand\@firstsupervisorrole{}
+\makeatother
+
+\makeatletter
+\newcommand\secondsupervisorrole[1]{\renewcommand\@secondsupervisorrole{#1}}
+\newcommand\@secondsupervisorrole{}
+\makeatother
+
+\makeatletter
+\newcommand\thirdsupervisorrole[1]{\renewcommand\@thirdsupervisorrole{#1}}
+\newcommand\@thirdsupervisorrole{}
+\makeatother
+
+\makeatletter
+\newcommand\fourthsupervisorrole[1]{\renewcommand\@fourthsupervisorrole{#1}}
+\newcommand\@fourthsupervisorrole{}
+\makeatother
+
+\makeatletter
+\newcommand\fifthsupervisorrole[1]{\renewcommand\@fifthsupervisorrole{#1}}
+\newcommand\@fifthsupervisorrole{}
+\makeatother
+
+
+%maketile
+\makeatletter
+\renewcommand{\maketitle}{
+    {\vspace*{2.8cm}}
+    {\centering}
+    {\LARGE{\textbf{\@title}}}
+    
+    {\vspace*{0.25cm}}
+    {\large {\textbf{\@subtitle}}}
+    
+    {\vspace{3cm}}
+    {\large{\textbf{Coach: \@author}}}
+    
+    {\vspace{2cm}}
+    {\large{\textbf{\@date}}}
+}
+\makeatother
