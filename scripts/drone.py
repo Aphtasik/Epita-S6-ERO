@@ -79,8 +79,8 @@ def update_mark(node, mark):
             mark[i] = (mark[i][0], None)
 
 def compute_distance(graph, node_a, node_b):
-    # TODO:
-    return 42;
+    return node_a + node_b;
+
 
 def find_best_path(int_nodes, graph):
     """
@@ -90,7 +90,7 @@ def find_best_path(int_nodes, graph):
     """
     M = [ False ] * len(int_nodes)   
     M[0] = True
-    nodes = [i for i in int_nodes]
+    nodes = [i for i in range(len(int_nodes))]
     curr_node = 0
     path = [0]
     miniind = 1
@@ -107,11 +107,14 @@ def find_best_path(int_nodes, graph):
     return path
 
 
-x = gh.load_weightedgraph("./graphs/test.wgra")
+x = gh.load_weightedgraph("./graphs/complex.wgra")
 y = get_interesting_nodes(x)
 print(y)
 z = cleaning_graph(x)
 print(z)
+w = find_best_path(z, x)
+print(w)
+
 
 
 
