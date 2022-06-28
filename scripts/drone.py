@@ -60,7 +60,7 @@ def supress_nodes(int_nodes, edges, mark):
         flag = True # node will be unmarked if set to true
         for edge in node_edges:
             if None in mark[edges.index(edge)]: # if a node is single colored and not already in tokeep, we add it
-                tmp = edge[0] if edge[0] != None else edge[1]
+                tmp = mark[edges.index(edge)][0] if mark[edges.index(edge)][0] != None else mark[edges.index(edge)][1]
                 if not tmp in to_keep:
                     to_keep.append(tmp)
                 flag = False
@@ -107,7 +107,7 @@ def find_best_path(int_nodes, graph):
     return path
 
 
-x = gh.load_weightedgraph("./graphs/test2.wgra")
+x = gh.load_weightedgraph("./graphs/test.wgra")
 y = get_interesting_nodes(x)
 print(y)
 z = cleaning_graph(x)
