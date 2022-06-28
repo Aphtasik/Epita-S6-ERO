@@ -1,14 +1,15 @@
 from algopy import graph as gh
 from algopy import queue
-from theg import * as theg
+from theg import * 
+
 
 def convert_to_edges(graph):
     """
     Converts a graph to a list of edges.
     """
     edges = []
-    for node in graph.adjlists:
-        for neighbor in graph.adjlists[node]):
+    for node in range(len(graph.adjlists)):
+        for neighbor in graph.adjlists[node]:
             if (node < neighbor):
                 edges.append((node, neighbor))
     return edges
@@ -18,7 +19,7 @@ def get_interesting_nodes(graph):
     Returns a list of nodes that are interesting to the drone.
     """
     res = []
-    P = theg.find_maximum_matching(graph.order, convert_to_edges(graph))
+    P = find_maximum_matching(graph.order, convert_to_edges(graph))
     for (src,dst) in P:
         res.append(src)
         res.append(dst)
@@ -40,17 +41,42 @@ def cleaning_graph(graph):
     int_nodes = get_interesting_nodes(graph)
     for node in int_nodes:
         for neigbors in graph.adjlists[node]:
-            if (neighbor in int_nodes):
-                mark[edges.index((node, neigbors))] = (node, neigbors)
+            if (neigbors in int_nodes):
+                if (node, neigbors) in edges:
+                    mark[edges.index((node, neigbors))] = (node, neigbors)
+                else:
+                    mark[edges.index((neigbors, node))] = (node, neigbors)
             else:
                 mark[edges.index((node, neigbors))] = (node, None)
+    return supress_nodes(int_nodes, edges, mark)
+    
+def supress_nodes(int_nodes, edges, mark):
+    """
+    supress the useless nodes in the interesting nodes
+    """
     to_keep = []
     for node in int_nodes:
         node_edges = find_node_edges(node, edges)
+        flag = True # node will be unmarked if set to true
         for edge in node_edges:
-            if None in mark[edges.index(edge)]:
-                    to_keep.append(edge[0])
+            if None in mark[edges.index(edge)]: # if a node is single colored and not already in tokeep, we add it
+                tmp = edge[0] if edge[0] != None else edge[1]
+                if not tmp in to_keep:
+                    to_keep.append(tmp)
+                flag = False
+        if (flag):
+            update_mark(node, mark)
     return to_keep
+
+def update_mark(node, mark):
+    """
+    update the marked vertices list by replacing node by None
+    """
+    for i in range(len(mark)):
+        if (node == mark[i][0]):
+            mark[i] = (None, mark[i][1])
+        elif (node == mark[i][1]):
+            mark[i] = (mark[i][0], None)
 
 def compute_distance(graph, node_a, node_b):
     # TODO:
@@ -81,7 +107,11 @@ def find_best_path(int_nodes, graph):
     return path
 
 
-
+x = gh.load_weightedgraph("./graphs/test2.wgra")
+y = get_interesting_nodes(x)
+print(y)
+z = cleaning_graph(x)
+print(z)
 
 
 
