@@ -459,7 +459,7 @@ def edgeset(edges):
 def adjlists(n, edges, matchingedges):
     succ_matching = [[] for i in range(n)]
     succ_nonmatching = [[] for i in range(n)]
-    for (a,b) in edges:
+    for (a,b, _) in edges:
         s = succ_matching if (a,b) in matchingedges else succ_nonmatching
         s[a].append(b)
         s[b].append(a)

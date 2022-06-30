@@ -20,8 +20,9 @@ def convert_to_edges(graph):
 
 def convert_to_adjlists(n, edges):
     adjlist = [ [] for _ in range(n) ]
-    G = graph(n, False, True);
+    G = gh.Graph(n, False, True);
     for (x, y, _) in edges:
+        print((x, y))
         adjlist[x].append(y)
         G.costs.update({(x, y): 0})
     G.adjlists = adjlist
@@ -120,11 +121,12 @@ def find_best_path(int_nodes, graph):
     return path
 
 def color_graph(osmgraph):
-    edges = osmgraph.edges
+    data = osmgraph.edges(data=True)
     # using the third value of edges as boolean for snow
-    for i in range(len(edges)):
-        if edges[i] == (_, _, 1):
-            edges[i] = (edges[i][0], edges[i][1], 0)
+    tmp = []
+    for node in data:
+        tmp.append((node[0], node[1], 0))
+    edges = to_soft_id_graph(tmp)
     g = convert_to_adjlists(len(osmgraph.nodes), edges);
     cleaned = cleaning_graph(g)
     int_nodes = find_best_path(cleaned, g)
@@ -134,10 +136,73 @@ def color_graph(osmgraph):
             g.costs.update({(node, neigbors): color})
     return g
 
+############################################
+
+CORRESPONDENCE_TABLE = {}
+CORRESPONDENCE_TABLE_PRIME = {}
+
+def get_true_node(soft_id):
+    if soft_id in CORRESPONDENCE_TABLE_PRIME:
+        return CORRESPONDENCE_TABLE_PRIME[soft_id]
+    return -1
+
+def to_soft_id_graph(graph_city):
+    global CORRESPONDENCE_TABLE_PRIME
+    global CORRESPONDENCE_TABLE
+    
+    CORRESPONDENCE_TABLE_PRIME = {}
+    CORRESPONDENCE_TABLE = {}
+    
+    graph_city_soft_id = []
+    soft_id = 0
+    
+    len_g = len(graph_city)
+    index = 0
+    
+    old_percentage = -1
+    for (node1,node2,dist) in graph_city:
+        if node1 not in  CORRESPONDENCE_TABLE:
+            CORRESPONDENCE_TABLE[node1] = soft_id
+            CORRESPONDENCE_TABLE_PRIME[soft_id] = node1
+            soft_id += 1
+            
+        if node2 not in  CORRESPONDENCE_TABLE:
+            CORRESPONDENCE_TABLE[node2] = soft_id
+            CORRESPONDENCE_TABLE_PRIME[soft_id] = node2
+            
+            soft_id += 1
+        s_id1 = CORRESPONDENCE_TABLE[node1]
+        s_id2 = CORRESPONDENCE_TABLE[node2]
+        graph_city_soft_id.append((s_id1,s_id2, dist))
+    return graph_city_soft_id
+
+def to_real_id_graph(graph_city_soft_id):
+    graph_city = []
+    soft_id = 0
+    for (node1,node2,dist) in graph_city_soft_id:
+        n_id1 = get_true_node(node1)
+        n_id2 = get_true_node(node2)
+    
+        graph_city.append((n_id1,n_id2, dist))
+    return graph_city
+
+def to_real_id_path(path_soft_id):
+    path = []
+    soft_id = 0
+    for (node1,node2) in path_soft_id:
+        n_id1 = get_true_node(node1)
+        n_id2 = get_true_node(node2)
+    
+        path.append(n_id1)
+    return path
+
+#######################################################
+
+
 place = "Montreal, Canada"
 G = ox.graph_from_place(place, network_type="drive")
-print(G.edges[125])
+x = G.edges(data=True)
 # G3 = ox.truncate.truncate_graph_dist(G,17,max_dist=1000)
-# g = color_graph(G)
+color_graph(G)
 # print(g.adjlists)
 
