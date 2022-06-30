@@ -1,7 +1,7 @@
 # Imports
 import random
 
-from algopy.graph import load_weightedgraph, todot
+from algopy.graph import load_weightedgraph, todot, Graph
 from algopy import queue
 
 # Def infinite
@@ -12,8 +12,8 @@ multizone = load_weightedgraph("graphs/multizone.wgra", int)
 zone = load_weightedgraph("graphs/zone.wgra", int)
 
 # Print graphs dot files
-print(todot(zone))
-print(todot(multizone))
+#print(todot(zone))
+#print(todot(multizone))
 
 # Function
 def eccentricity(G, src):
@@ -49,8 +49,8 @@ def random_numbers(maximum, nb):
         array: the array of random numbers
     """
     res = []
-    for i in range(nb):
-        res.append(random.randint(0, maximum))
+    for _ in range(nb):
+        res.append(random.randint(0, maximum - 1))
     return res
 
 def ite1(G, n):
@@ -86,7 +86,7 @@ def ite1(G, n):
 
     return res
 
-print(ite1(multizone, 2))    
+#print(ite1(multizone, 2))    
 
 def ite2(G, n):
     """Implementation of the Iteration2. Take random zone bases and associate
@@ -98,6 +98,10 @@ def ite2(G, n):
     Returns:
         matrix: each list correspond to a zone with vertices number in it
     """
+    # If there is more engines than vertex, assign one engine for each
+    if (n > G.order):
+        n = G.order
+
     # Take random base point
     rand = random_numbers(G.order, 1)
 
@@ -134,4 +138,33 @@ def ite2(G, n):
 
     return res
 
-print(ite2(multizone, 2))    
+def extract_sub_graphs(G, M):
+    graphList = []
+
+    for i in range(len(M)):
+        g = Graph(len(M[i]), False, True, None)
+        for j in range(len(M[i])):
+            for k in range(j + 1, len(M[i])):
+                if M[i][k] in G.adjlists[M[i][j]]:
+                    g.addedge(j, k, G.costs[M[i][j], M[i][k]])
+        print(todot(g))
+        graphList.append(g)
+    return graphList
+
+def print_all_graphs(graphList):
+    for elt in graphList:
+        print(todot(elt))
+
+def do_the_work(G, nbZones, is_snow=None):
+    print("GRAPH")
+    print(todot(G))
+    zones = ite2(G, nbZones)
+    print("ZONES")
+    print(zones)
+    graphList = extract_sub_graphs(G, zones)
+    print("PRINT")
+    print_all_graphs(graphList)
+
+do_the_work(zone, 2)
+
+
