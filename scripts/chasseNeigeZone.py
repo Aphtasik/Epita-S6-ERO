@@ -2,10 +2,9 @@
 
 from cmath import inf
 from webbrowser import Galeon
-from algopy import graph as gh
 
-G = gh.load_weightedgraph("/home/adrie/Epita-S6-ERO/scripts/graphs/zone.wgra")
-gh.display(G)
+from jinja2 import PrefixLoader
+from algopy import graph as gh
 
 def clearTheSnow1(graph):
     """Pass by all edges to clear the snow
@@ -31,7 +30,7 @@ def clearTheSnow1(graph):
         graph.removeedge(currentNode, nextNode)
         path.append((currentNode, nextNode))
         currentNode = nextNode
-
+    return PRecord
 
 #######################################################################################################################################
 #######################################################################################################################################
@@ -172,7 +171,8 @@ def Chinese_Postman(graph):
     for i in pairings_sum:
         s = 0
         for j in range(len(i)):
-            s += dijkstra(graph, i[j][0], i[j][1])
+            i[j].append(dijkstra(graph, i[j][0], i[j][1]))
+            s += i[j][2]
         min_sums.append(s)
     
     added_dis = float(inf)
@@ -183,7 +183,7 @@ def Chinese_Postman(graph):
             min_index = i
     
     for i in pairings_sum[min_index]:
-        graph.addedge(i[0], i[1])
+        graph.addedge(i[0], i[1], i[2])
     
     notLoadedG = gh.Graph(graph.order)
     for a in range(0, graph.order):
@@ -316,9 +316,30 @@ def transform_and_find_eulerian_path(graph):
 # gh.display(G)
 # print(clearTheSnow1(G))
 
+def cleanArea(listGraph):
+    listPath = []
+    for i in listGraph:
+        listPath.append(transform_and_find_eulerian_path(i))
+
+def cleanArea2Medium(listGraph):
+    listPath = []
+    for i in listGraph:
+        listPath.append(Chinese_Postman(i))
+
+def cleanAreaBad(listGraph):
+    listPath = []
+    for i in listGraph:
+        listPath.append(clearTheSnow1(i))
+
+def getWeightFromPath(G, path):
+    acu = 0
+    for i in path:
+        acu += G.costs[(i[0], i[1])]
+    return acu
+
 G = gh.load_weightedgraph("/home/adrie/Epita-S6-ERO/scripts/graphs/zone.wgra")
 
-print(clearTheSnow1(G))
-print(Chinese_Postman(G))
 heck = transform_and_find_eulerian_path(G)
-print(heck)
+print(getWeightFromPath(G, heck))
+chineseParty = Chinese_Postman(G)
+print(getWeightFromPath(G, chineseParty))
