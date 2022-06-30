@@ -99,8 +99,10 @@ def ite2(G, n):
         matrix: each list correspond to a zone with vertices number in it
     """
     # If there is more engines than vertex, assign one engine for each
-    if (n > G.order):
-        n = G.order
+    if (G.order/10 > 2300):
+        n = 2300
+    elif (n > G.order/10):
+        n = G.order/10
 
     # Take random base point
     rand = random_numbers(G.order, 1)
@@ -155,16 +157,18 @@ def print_all_graphs(graphList):
     for elt in graphList:
         print(todot(elt))
 
-def do_the_work(G, nbZones, is_snow=None):
-    print("GRAPH")
-    print(todot(G))
+def do_the_work(G, nbZones=2300, is_snow=None):
+    """Entry Point, take the graph map, and optional zone number and snow road and return sub Graph
+    In which an engine will work
+
+    Args:
+        G (graph): The map graph
+        nbZones (int): nb of zones to define = engines
+        is_snow (int,int,bool): every edges and if there is snow, Default to None
+
+    Returns:
+        Graph List: Every sub graph
+    """
     zones = ite2(G, nbZones)
-    print("ZONES")
-    print(zones)
     graphList = extract_sub_graphs(G, zones)
-    print("PRINT")
-    print_all_graphs(graphList)
-
-do_the_work(zone, 2)
-
-
+    return graphList
