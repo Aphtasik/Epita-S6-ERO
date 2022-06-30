@@ -1,4 +1,3 @@
-from copy import copy
 '''
     is_connected - Checks if a graph in the form of a dictionary is
     connected or not, using Breadth-First Search Algorithm (BFS)
@@ -51,7 +50,7 @@ def fleury(G):
     if len(odn) > 2 or len(odn) == 1:
         return 'Not Eulerian Graph'
     else:
-        g = copy(G)
+        g = G.copy()
         trail = []
         if len(odn) == 2:
             u = odn[0]

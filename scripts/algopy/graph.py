@@ -42,8 +42,7 @@ class Graph:
         for _ in range(order):
             self.adjlists.append([])
         self.labels = labels
-
-
+    
     def addedge(self, src, dst, cost=None):
         """Add egde to graph.
     
@@ -262,3 +261,4 @@ def save(G, fileOut):
     fout = open(fileOut, mode='w')
     fout.write(gra)
     fout.close()
+    

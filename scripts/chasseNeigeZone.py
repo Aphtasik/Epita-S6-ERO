@@ -1,9 +1,5 @@
 # Imports
 
-from cmath import inf
-from webbrowser import Galeon
-
-from jinja2 import PrefixLoader
 from algopy import graph as gh
 
 def clearTheSnow1(graph):
@@ -175,7 +171,7 @@ def Chinese_Postman(graph):
             s += i[j][2]
         min_sums.append(s)
     
-    added_dis = float(inf)
+    added_dis = 100000000
     min_index = 0
     for i in range(0, len(min_sums)):
         if (min_sums[i] < added_dis):
@@ -316,7 +312,7 @@ def transform_and_find_eulerian_path(graph):
 # gh.display(G)
 # print(clearTheSnow1(G))
 
-def cleanArea(listGraph):
+def cleanArea(listGraph, snowedPaths):
     listPath = []
     for i in listGraph:
         listPath.append(transform_and_find_eulerian_path(i))
