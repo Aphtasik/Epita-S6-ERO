@@ -32,10 +32,7 @@ def clearTheSnow1(graph):
         path.append((currentNode, nextNode))
         currentNode = nextNode
 
-# Tests
-# G = gh.load_weightedgraph("/home/adrie/Epita-S6-ERO/scripts/graphs/zone.wgra")
-# gh.display(G)
-# print(clearTheSnow1(G))
+
 #######################################################################################################################################
 #######################################################################################################################################
 #######################################################################################################################################
@@ -82,7 +79,6 @@ def get_odd(graph):
             degrees[i]=len(graph.adjlists[i])
                 
     odds = [i for i in range(len(degrees)) if degrees[i]%2!=0]
-    print('odds are:',odds)
     return odds
 
 def gen_pairs(odds):
@@ -92,7 +88,6 @@ def gen_pairs(odds):
         for j in range(i+1,len(odds)):
             pairs[i].append([odds[i],odds[j]])
         
-    print('pairs are:',pairs)
     return pairs
 
 def DFSCount(graph, v, visited):
@@ -121,7 +116,6 @@ def isValidNextEdge(graph, u, v):
             '''2.b) Remove edge (u, v) and after removing the edge, count
                 vertices reachable from u'''
             graph.removeedge(u, v)
-            graph.removeedge(v, u)
             visited =[False]*(graph.order)
             count2 = DFSCount(graph, u, visited)
  
@@ -131,19 +125,20 @@ def isValidNextEdge(graph, u, v):
             # 2.d) If count1 is greater, then edge (u, v) is a bridge
             return False if count1 > count2 else True
 
-def printEulerUtil(graph, u):
+def printEulerUtil(graph, u, path):
         #Recur for all the vertices adjacent to this vertex
         for v in graph.adjlists[u]:
             #If edge u-v is not removed and it's a a valid next edge
             if isValidNextEdge(graph, u, v):
-                print("%d-%d " %(u,v)),
+                path.append((u,v))
                 graph.removeedge(u, v)
-                printEulerUtil(graph, v)
+                printEulerUtil(graph, v, path)
 
 def Chinese_Postman(graph):
+    path = []
     odds = get_odd(graph)
     if(len(odds)==0):
-        printEulerUtil(graph, 0)
+        printEulerUtil(graph, 0, path)
 
     pairs = gen_pairs(odds)
     l = (len(pairs)+1)//2
@@ -194,19 +189,18 @@ def Chinese_Postman(graph):
     for a in range(0, graph.order):
         for b in graph.adjlists[a]:
             notLoadedG.addedge(a, b)
-    printEulerUtil(notLoadedG, 0)
+    printEulerUtil(notLoadedG, 0, path)
+    return path
 
-G = gh.load_weightedgraph("/home/adrie/Epita-S6-ERO/scripts/graphs/zone.wgra")
-Chinese_Postman(G)
-
-####################################################################################################################################
-####################################################################################################################################
-####################################################################################################################################
-####################################################################################################################################
-####################################################################################################################################
-####################################################################################################################################
-####################################################################################################################################
-####################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
 
 import numpy as np
 import importlib as iplib
@@ -316,5 +310,15 @@ def transform_and_find_eulerian_path(graph):
     E_path = fleury.fleury(dict_graph2)
     return E_path
 
-heck = transform_and_find_eulerian_path(gh.load_weightedgraph("/home/adrie/Epita-S6-ERO/scripts/graphs/zone.wgra"))
+
+# Tests
+# G = gh.load_weightedgraph("/home/adrie/Epita-S6-ERO/scripts/graphs/zone.wgra")
+# gh.display(G)
+# print(clearTheSnow1(G))
+
+G = gh.load_weightedgraph("/home/adrie/Epita-S6-ERO/scripts/graphs/zone.wgra")
+
+print(clearTheSnow1(G))
+print(Chinese_Postman(G))
+heck = transform_and_find_eulerian_path(G)
 print(heck)
