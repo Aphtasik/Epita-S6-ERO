@@ -167,8 +167,12 @@ def cleanArea(listGraph, snowedPaths=None):
 
 def cleanAreaBad(listGraph):
     listPath = []
-    for i in listGraph:
-        listPath.append(clearTheSnow1(i))
+    for i in range(0, len(listGraph)):
+        if (listGraph[i].order == 0):
+            listGraph.pop(i)
+            i -= 1
+            continue
+        listPath.append(clearTheSnow1(listGraph[i]))
 
 def getWeightFromPath(G, path):
     acu = 0

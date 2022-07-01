@@ -8,12 +8,14 @@ from theg import path
 def osnxgraphToNormalGraph(G):
     data = G.edges(data=True)
     tmp = []
+    l = 0
     for node in data:
-        tmp.append((node[0], node[1], node["length"]))
+        tmp.append((node[0], node[1], node[2]["length"]))
+        l+=1
     edges = drone.to_soft_id_graph(tmp)
-    ng = gf.Graph(len(data.nodes))
-    for e in edges:
-        ng.addedge(e)
+    ng = gf.Graph(l)
+    for (a, b, e) in edges:
+        ng.addedge(a, b, e)
     return ng
 
 def translateNode(path, zoneref):
@@ -35,14 +37,14 @@ def main(arg):
             except:
                 print("osmnx not installed, use pip3 install osmnx")
             print("Start Montreal application")
-            print("- Downloading Montreal map, this can take some time (like an hour)...")
+            print("- Downloading Montreal map, this can take some time")
             place = "Montreal, Canada"
             osmnxGraph = ox.graph_from_place(place, network_type="drive")
             print("- Montreal downloaded")
             x = osmnxGraph.edges(data=True)
-            snowGraph = drone.color_graph(osmnxGraph) # zone with wheight indicating if they are snowy
+            # snowGraph = drone.color_graph(osmnxGraph) # zone with wheight indicating if they are snowy
             print("- Snow road located")
-            normalGraph = osnxgraphToNormalGraph(osmnxGraph)
+            normalGraph = osnxgraphToNormalGraph(osmnxGraph) # nique
         else:
             normalGraph = gf.load_weightedgraph("./graphs/complex.wgra")
         print("[*]Demonstration start")
@@ -51,6 +53,8 @@ def main(arg):
         print("[-]Determining area done")
         print("    Number of areas:", len(graphlist))
         print("[+]Starting cleaning")
+        print(graphlist)
+        print(zoneref)
         (paths, costs) = cnz.cleanArea(graphlist)
         print("[-]Cleaning done")
         print("[*]Results:")
