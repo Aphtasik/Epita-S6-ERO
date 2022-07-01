@@ -54,6 +54,26 @@ def random_numbers(maximum, nb):
         res.append(random.randint(0, maximum - 1))
     return res
 
+def filter_matrix(matrix):
+    alone = []
+    length = len(matrix)
+
+    i = 0
+    while i < length:
+        if matrix[i] == []:
+            matrix.pop(i)
+            i = 0
+            length-=1
+        elif len(matrix[i]) == 1:
+            alone.append(matrix[i][0])
+            matrix.pop(i)
+            i = 0
+            length-=1
+        i+=1
+
+    matrix[0].extend(alone)
+    return matrix
+
 def ite1(G, n):
     """Implementation of the Iteration1. Take random zone bases and associate
     each vertices with a zone according to the eccentricities of the zone bases
@@ -93,7 +113,7 @@ def ite1(G, n):
                 mini = (j, eccentricities[j][i])
         res[mini[0]].append(i)
 
-    return res
+    return filter_matrix(res)
 
 #print(ite1(multizone, 2))    
 
@@ -149,7 +169,7 @@ def ite2(G, n):
                 mini = (j, eccentricities[j][i])
         res[mini[0]].append(i)
 
-    return res
+    return filter_matrix(res)
 
 def extract_sub_graphs(G, M):
     graphList = []
@@ -180,8 +200,5 @@ def do_the_work(G, nbZones=2300, is_snow=None):
         Graph List: Every sub graph
     """
     zones = ite1(G, nbZones)
-    for i in range(len(zones)):
-        if zones[i] == []:
-            zones.pop(i)
     graphList = extract_sub_graphs(G, zones)
     return (graphList, zones)
