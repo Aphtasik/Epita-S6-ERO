@@ -1,11 +1,24 @@
 # Projet ERO
 
-Objectif: deneiger Montreal
+## To Start the presentation you must: 
+install python3 and pip with your favorite package manager
 
-## Usage:
-pour recuperer la carte de montreal sous format .osm
+use 
 ```
-wget https://download.bbbike.org/osm/bbbike/Montreal/Montreal.osm.gz && gunzip Montreal.osm.gz
+pip3 install osmnx
+pip3 install numpy
 ```
 
-car impossible de le push sur le git le fichier est trop volumineux
+then place yourself in the scripts directory before running
+
+```
+python3 main.py 2
+```
+
+
+for the theorical case or 
+
+```
+python3 main.py 1
+```
+for the Montreal case ( ! ! The Montreal case is not working)
