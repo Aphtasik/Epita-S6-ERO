@@ -55,6 +55,7 @@ def main(arg):
         print("[-]Cleaning done")
         print("[*]Results:")
         print("Total cost: " + "{:.2f}".format(sum(costs)), "\n")
+        paths = translateNode(paths, zoneref)
         for i in range(0, len(paths)):
             print("path", i, ": cost:" + "{:.2f}".format(costs[i]))
             print(paths[i])
