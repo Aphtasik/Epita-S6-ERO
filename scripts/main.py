@@ -16,7 +16,16 @@ def osnxgraphToNormalGraph(G):
     for e in edges:
         ng.addedge(e)
     return ng
-            
+
+def translateNode(path, zoneref):
+    n = len(zoneref)
+    resPath = [[] * n for i in range(n)]
+    for i in range(0, len(zoneref)):
+        for (a,b) in path[i]:
+            resPath[i].append((zoneref[i][a], zoneref[i][b]))
+    return resPath
+
+
 def main(arg):
     if len(arg) != 1:
         print("Use only 1 argument, 1 for demonstratrion, 2 for Montreal application")
@@ -29,7 +38,7 @@ def main(arg):
             print("[+]Starting cleaning")
             paths = cnz.cleanArea(graphlist)
             print("[-]Cleaning done")
-            print(paths)
+            print(translateNode(paths, zoneref))
         elif arg[0] == "2":
             place = "Montreal, Canada"
             osmnxGraph = ox.graph_from_place(place, network_type="drive")
