@@ -180,5 +180,8 @@ def do_the_work(G, nbZones=2300, is_snow=None):
         Graph List: Every sub graph
     """
     zones = ite1(G, nbZones)
+    for i in range(len(zones)):
+        if zones[i] == []:
+            zones.pop(i)
     graphList = extract_sub_graphs(G, zones)
     return (graphList, zones)
