@@ -149,7 +149,7 @@ def extract_sub_graphs(G, M):
             for k in range(j + 1, len(M[i])):
                 if M[i][k] in G.adjlists[M[i][j]]:
                     g.addedge(j, k, G.costs[M[i][j], M[i][k]])
-        print(todot(g))
+        # print(todot(g))
         graphList.append(g)
     return graphList
 

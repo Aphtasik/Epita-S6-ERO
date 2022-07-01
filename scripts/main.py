@@ -26,10 +26,15 @@ def main(arg):
             normalGraph = gf.load_weightedgraph("./graphs/complex.wgra")
             (graphlist, zoneref) = cn.do_the_work(normalGraph, 500)
             print("[-]Determining area done")
+            print()
             print("[+]Starting cleaning")
-            paths = cnz.cleanArea(graphlist)
+            (paths, costs) = cnz.cleanArea(graphlist)
             print("[-]Cleaning done")
-            print(paths)
+            print("[*]Results:")
+            print("Total cost: " + "{:.2f}".format(sum(costs)))
+            for i in range(0, len(paths)):
+                print("    cost:" + "{:.2f}".format(costs[i]))
+                print(paths[i])
         elif arg[0] == "2":
             place = "Montreal, Canada"
             osmnxGraph = ox.graph_from_place(place, network_type="drive")

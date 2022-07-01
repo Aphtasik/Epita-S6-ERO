@@ -314,9 +314,11 @@ def transform_and_find_eulerian_path(graph):
 
 def cleanArea(listGraph, snowedPaths=None):
     listPath = []
-    for i in listGraph:
-        listPath.append(transform_and_find_eulerian_path(i))
-    return listPath
+    costs = []
+    for i in range(0, len(listGraph)):
+        listPath.append(transform_and_find_eulerian_path(listGraph[i]))
+        costs.append(getWeightFromPath(listGraph[i], listPath[i]))
+    return listPath, costs
 
 def cleanArea2Medium(listGraph):
     listPath = []
