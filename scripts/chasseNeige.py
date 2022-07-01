@@ -8,8 +8,8 @@ from algopy import queue
 inf = float('inf')
 
 # Def graphs
-multizone = load_weightedgraph("graphs/multizone.wgra", int)
-zone = load_weightedgraph("graphs/zone.wgra", int)
+# multizone = load_weightedgraph("graphs/multizone.wgra", int)
+# zone = load_weightedgraph("graphs/zone.wgra", int)
 
 # Print graphs dot files
 #print(todot(zone))
@@ -102,7 +102,7 @@ def ite2(G, n):
     if (G.order/10 > 2300):
         n = 2300
     elif (n > G.order/10):
-        n = G.order/10
+        n = (int)(G.order/10)
 
     # Take random base point
     rand = random_numbers(G.order, 1)
@@ -171,4 +171,4 @@ def do_the_work(G, nbZones=2300, is_snow=None):
     """
     zones = ite2(G, nbZones)
     graphList = extract_sub_graphs(G, zones)
-    return graphList
+    return (graphList, zones)

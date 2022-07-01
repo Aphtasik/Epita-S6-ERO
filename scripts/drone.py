@@ -20,7 +20,7 @@ def convert_to_edges(graph):
 
 def convert_to_adjlists(n, edges):
     adjlist = [ [] for _ in range(n) ]
-    G = gh.Graph(n, False, True);
+    G = gh.Graph(n, False, True)
     for (x, y, _) in edges:
         print((x, y))
         adjlist[x].append(y)
@@ -93,7 +93,7 @@ def update_mark(node, mark):
             mark[i] = (mark[i][0], None, 0)
 
 def compute_distance(graph, node_a, node_b):
-    return node_a + node_b;
+    return node_a + node_b
 
 
 def find_best_path(int_nodes, graph):
@@ -127,7 +127,7 @@ def color_graph(osmgraph):
     for node in data:
         tmp.append((node[0], node[1], 0))
     edges = to_soft_id_graph(tmp)
-    g = convert_to_adjlists(len(osmgraph.nodes), edges);
+    g = convert_to_adjlists(len(osmgraph.nodes), edges)
     cleaned = cleaning_graph(g)
     int_nodes = find_best_path(cleaned, g)
     for node in int_nodes:
@@ -199,10 +199,10 @@ def to_real_id_path(path_soft_id):
 #######################################################
 
 
-place = "Montreal, Canada"
-G = ox.graph_from_place(place, network_type="drive")
-x = G.edges(data=True)
-# G3 = ox.truncate.truncate_graph_dist(G,17,max_dist=1000)
-color_graph(G)
+# place = "Montreal, Canada"
+# G = ox.graph_from_place(place, network_type="drive")
+# x = G.edges(data=True)
+# # G3 = ox.truncate.truncate_graph_dist(G,17,max_dist=1000)
+# G = color_graph(G)
 # print(g.adjlists)
 

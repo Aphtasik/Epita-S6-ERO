@@ -312,10 +312,11 @@ def transform_and_find_eulerian_path(graph):
 # gh.display(G)
 # print(clearTheSnow1(G))
 
-def cleanArea(listGraph, snowedPaths):
+def cleanArea(listGraph, snowedPaths=None):
     listPath = []
     for i in listGraph:
         listPath.append(transform_and_find_eulerian_path(i))
+    return listPath
 
 def cleanArea2Medium(listGraph):
     listPath = []
@@ -333,9 +334,9 @@ def getWeightFromPath(G, path):
         acu += G.costs[(i[0], i[1])]
     return acu
 
-G = gh.load_weightedgraph("/home/adrie/Epita-S6-ERO/scripts/graphs/zone.wgra")
+# G = gh.load_weightedgraph("/home/adrie/Epita-S6-ERO/scripts/graphs/zone.wgra")
 
-heck = transform_and_find_eulerian_path(G)
-print(getWeightFromPath(G, heck))
-chineseParty = Chinese_Postman(G)
-print(getWeightFromPath(G, chineseParty))
+# heck = transform_and_find_eulerian_path(G)
+# print(getWeightFromPath(G, heck))
+# chineseParty = Chinese_Postman(G)
+# print(getWeightFromPath(G, chineseParty))
