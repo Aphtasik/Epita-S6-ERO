@@ -204,9 +204,30 @@ def to_real_id_path(path_soft_id):
 
 #######################################################
 
+def cut_city(place, n):
+    """
+    cut the city in small parts
+    """
+    G = ox.graph_from_place(place, network_type="drive")
+    nodes = G.nodes(data=True)
+    counter = len(G.nodes) // n
+    i = counter
+    res = []
+    for node in nodes:
+        if (len(res) >= n):
+            break
+        i-=1 
+        if (i <= 0):
+            tmp = ox.truncate.truncate_graph_dist(G,node[0],max_dist=1500)
+            res.append(tmp)
+            print(len(tmp.nodes))
+            i = counter
+    return res
 
-# place = "Montreal, Canada"
-# G = ox.graph_from_place(place, network_type="drive")
-# G1 = ox.truncate.truncate_graph_dist(G,17052729,max_dist=2000)
-# color_graph(G1)
-# print(g.adjlists)
+def Process_drone():
+    place = "Montreal, Canada"
+    part = cut_city(place, 1)
+    res = color_graph(part[0])
+    return gh.todot(res) 
+
+# print(Process_drone())

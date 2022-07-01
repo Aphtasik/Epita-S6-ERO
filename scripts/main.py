@@ -28,27 +28,33 @@ def translateNode(path, zoneref):
 
 def main(arg):
     if len(arg) != 1:
-        print("Use only 1 argument, 1 for demonstratrion, 2 for Montreal application")
-    else:
+        print("Use only one argument, 1 for Montreal application, 2 for demonstration")
+    else:            
         if arg[0] == "1":
-            print("[*]Demonstration start")
-            normalGraph = gf.load_weightedgraph("./graphs/complex.wgra")
-            (graphlist, zoneref) = cn.do_the_work(normalGraph, 500)
-            print("[-]Determining area done")
-            print("[+]Starting cleaning")
-            paths = cnz.cleanArea(graphlist)
-            print("[-]Cleaning done")
-            print(translateNode(paths, zoneref))
-        elif arg[0] == "2":
+            print("Start Montreal application")
+            print("- Downloading Montreal map, this can take some time (like an hour)...")
             place = "Montreal, Canada"
             osmnxGraph = ox.graph_from_place(place, network_type="drive")
+            print("- Montreal downloaded")
             x = osmnxGraph.edges(data=True)
             snowGraph = drone.color_graph(osmnxGraph) # zone with wheight indicating if they are snowy
+            print("- Snow road located")
             normalGraph = osnxgraphToNormalGraph(osmnxGraph)
-            # Zone shit #
-            (graphlist, zoneref) = cn.do_the_work(normalGraph, 500, snowGraph)
-            ##
-            paths = cnz.cleanArea(graphlist, snowGraph)
-            print(paths)
+        else:
+            normalGraph = gf.load_weightedgraph("./graphs/complex.wgra")
+        print("[*]Demonstration start")
+        print("[+]Determination of areas")
+        (graphlist, zoneref) = cn.do_the_work(normalGraph, 500)
+        print("[-]Determining area done")
+        print("    Number of areas:", len(graphlist))
+        print("[+]Starting cleaning")
+        (paths, costs) = cnz.cleanArea(graphlist)
+        print("[-]Cleaning done")
+        print("[*]Results:")
+        print("Total cost: " + "{:.2f}".format(sum(costs)), "\n")
+        for i in range(0, len(paths)):
+            print("path", i, ": cost:" + "{:.2f}".format(costs[i]))
+            print(paths[i])
+        print("[*]End demonstration")
 if __name__ == "__main__":
    main(sys.argv[1:])
