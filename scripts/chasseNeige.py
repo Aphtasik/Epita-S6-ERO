@@ -10,10 +10,11 @@ inf = float('inf')
 # Def graphs
 # multizone = load_weightedgraph("graphs/multizone.wgra", int)
 # zone = load_weightedgraph("graphs/zone.wgra", int)
+# complexe = load_weightedgraph("graphs/complex.wgra", int)
 
 # Print graphs dot files
-#print(todot(zone))
-#print(todot(multizone))
+# print(todot(zone))
+# print(todot(multizone))
 
 # Function
 def eccentricity(G, src):
@@ -63,9 +64,17 @@ def ite1(G, n):
     Returns:
         matrix: each list correspond to a zone with vertices number in it
     """
+    # If there is more engines than vertex, assign one engine for each
+    if (n > G.order//5):
+        n = G.order//5
+    if (n > 2300):
+        n = 2300
+    if (n < 1):
+        n = 1
+
     # Take random zone bases
-    rand = [0, 8] # TODO: Should be random in a real situation
-    # rand = random_numbers(G.order, n)
+    # rand = [0, 8] # TODO: Should be random in a real situation
+    rand = random_numbers(G.order, n)
 
     # Returned matrix, contain a vertices list for each zones
     res = [[] for _ in range(n)]
@@ -99,10 +108,12 @@ def ite2(G, n):
         matrix: each list correspond to a zone with vertices number in it
     """
     # If there is more engines than vertex, assign one engine for each
-    if (G.order/10 > 2300):
+    if (n > G.order//5):
+        n = G.order//5
+    if (n > 2300):
         n = 2300
-    elif (n > G.order/10):
-        n = (int)(G.order/10)
+    if (n < 1):
+        n = 1
 
     # Take random base point
     rand = random_numbers(G.order, 1)
@@ -149,7 +160,6 @@ def extract_sub_graphs(G, M):
             for k in range(j + 1, len(M[i])):
                 if M[i][k] in G.adjlists[M[i][j]]:
                     g.addedge(j, k, G.costs[M[i][j], M[i][k]])
-        # print(todot(g))
         graphList.append(g)
     return graphList
 
@@ -169,6 +179,6 @@ def do_the_work(G, nbZones=2300, is_snow=None):
     Returns:
         Graph List: Every sub graph
     """
-    zones = ite2(G, nbZones)
+    zones = ite1(G, nbZones)
     graphList = extract_sub_graphs(G, zones)
     return (graphList, zones)
