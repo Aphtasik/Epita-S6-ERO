@@ -33,167 +33,6 @@ def clearTheSnow1(graph):
 #######################################################################################################################################
 #######################################################################################################################################
 #######################################################################################################################################
-#######################################################################################################################################
-def dijkstra(graph, src, dest):
-    ind = src
-    if src == dest:
-        return 0
-    inf = float('inf')
-    min = inf
-    shortest = [inf for _ in range(graph.order)]
-    for i in graph.adjlists[src]:
-        shortest[i] = graph.costs[(src, i)]
-        if min < graph.costs[(src, i)]:
-            min = graph.costs[(src, i)]
-            ind = i
-    shortest[src] = 0
-    selected = [src]
-    # Dijkstra
-    while(ind!=dest):
-        for i in range(graph.order):
-            if i not in selected:
-                if i in graph.adjlists[ind]:
-                    #Check if distance needs to be updated
-                    if((graph.costs[(ind, i)] + min) < shortest[i]):
-                        shortest[i] = graph.costs[(ind, i)] + min
-        temp_min = inf
-        
-        for j in range(graph.order):
-            if j not in selected:
-                if(shortest[j] < temp_min):
-                    temp_min = shortest[j]
-                    ind = j
-        min = temp_min
-        selected.append(ind)
-    
-    return shortest[dest]
- 
-def get_odd(graph):
-    degrees = [0 for i in range(graph.order)]
-    for i in range(graph.order):
-            degrees[i]=len(graph.adjlists[i])
-                
-    odds = [i for i in range(len(degrees)) if degrees[i]%2!=0]
-    return odds
-
-def gen_pairs(odds):
-    pairs = []
-    for i in range(len(odds)-1):
-        pairs.append([])
-        for j in range(i+1,len(odds)):
-            pairs[i].append([odds[i],odds[j]])
-        
-    return pairs
-
-def DFSCount(graph, v, visited):
-        count = 1
-        visited[v] = True
-        for i in graph.adjlists[v]:
-            if visited[i] == False:
-                count = count + DFSCount(graph, i, visited)        
-        return count
-
-def isValidNextEdge(graph, u, v):
-        # The edge u-v is valid in one of the following two cases:
-  
-          #  1) If v is the only adjacent vertex of u
-        if len(graph.adjlists[u]) == 1:
-            return True
-        else:
-            '''
-             2) If there are multiple adjacents, then u-v is not a bridge
-                 Do following steps to check if u-v is a bridge
-  
-            2.a) count of vertices reachable from u'''   
-            visited =[False]*(graph.order)
-            count1 = DFSCount(graph, u, visited)
- 
-            '''2.b) Remove edge (u, v) and after removing the edge, count
-                vertices reachable from u'''
-            graph.removeedge(u, v)
-            visited =[False]*(graph.order)
-            count2 = DFSCount(graph, u, visited)
- 
-            #2.c) Add the edge back to the graph
-            graph.addedge(u,v)
- 
-            # 2.d) If count1 is greater, then edge (u, v) is a bridge
-            return False if count1 > count2 else True
-
-def printEulerUtil(graph, u, path):
-        #Recur for all the vertices adjacent to this vertex
-        for v in graph.adjlists[u]:
-            #If edge u-v is not removed and it's a a valid next edge
-            if isValidNextEdge(graph, u, v):
-                path.append((u,v))
-                graph.removeedge(u, v)
-                printEulerUtil(graph, v, path)
-
-def Chinese_Postman(graph):
-    path = []
-    odds = get_odd(graph)
-    if(len(odds)==0):
-        printEulerUtil(graph, 0, path)
-
-    pairs = gen_pairs(odds)
-    l = (len(pairs)+1)//2
-    pairings_sum = []
-    
-    def get_pairs(pairs, done = [], final = []):
-        if(pairs[0][0][0] not in done):
-            done.append(pairs[0][0][0])
-            
-            for i in pairs[0]:
-                f = final[:]
-                val = done[:]
-                if(i[1] not in val):
-                    f.append(i)
-                else:
-                    continue
-                
-                if(len(f)==l):
-                    pairings_sum.append(f)
-                    return 
-                else:
-                    val.append(i[1])
-                    get_pairs(pairs[1:],val, f)
-                    
-        else:
-            get_pairs(pairs[1:], done, final)
-            
-    get_pairs(pairs)
-    min_sums = []
-    
-    for i in pairings_sum:
-        s = 0
-        for j in range(len(i)):
-            i[j].append(dijkstra(graph, i[j][0], i[j][1]))
-            s += i[j][2]
-        min_sums.append(s)
-    
-    added_dis = 100000000
-    min_index = 0
-    for i in range(0, len(min_sums)):
-        if (min_sums[i] < added_dis):
-            added_dis = min_sums[i]
-            min_index = i
-    
-    for i in pairings_sum[min_index]:
-        graph.addedge(i[0], i[1], i[2])
-    
-    notLoadedG = gh.Graph(graph.order)
-    for a in range(0, graph.order):
-        for b in graph.adjlists[a]:
-            notLoadedG.addedge(a, b)
-    printEulerUtil(notLoadedG, 0, path)
-    return path
-
-######################################################################################################################################
-######################################################################################################################################
-######################################################################################################################################
-######################################################################################################################################
-######################################################################################################################################
-######################################################################################################################################
 ######################################################################################################################################
 ######################################################################################################################################
 ######################################################################################################################################
@@ -320,10 +159,11 @@ def cleanArea(listGraph, snowedPaths=None):
         costs.append(getWeightFromPath(listGraph[i], listPath[i]))
     return listPath, costs
 
-def cleanArea2Medium(listGraph):
-    listPath = []
-    for i in listGraph:
-        listPath.append(Chinese_Postman(i))
+# There was an intermediate function
+# def cleanArea2Medium(listGraph):
+#     listPath = []
+#     for i in listGraph:
+#         listPath.append(Chinese_Postman(i))
 
 def cleanAreaBad(listGraph):
     listPath = []

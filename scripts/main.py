@@ -2,7 +2,6 @@ import sys
 import drone
 import chasseNeigeZone as cnz
 import chasseNeige as cn
-import osmnx as ox
 from algopy import graph as gf
 from theg import path
 
@@ -22,6 +21,10 @@ def main(arg):
         print("Use only one argument, 1 for Montreal application, 2 for demonstration")
     else:            
         if arg[0] == "1":
+            try:
+                import osmnx as ox
+            except:
+                print("osmnx not installed, use pip3 install osmnx")
             print("Start Montreal application")
             print("- Downloading Montreal map, this can take some time (like an hour)...")
             place = "Montreal, Canada"
