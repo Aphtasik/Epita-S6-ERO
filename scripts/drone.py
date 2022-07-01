@@ -5,6 +5,7 @@ from theg import *
 import multiprocessing as mp
 import numpy as np
 import osmnx as ox
+import random
 
 def convert_to_edges(graph):
     """
@@ -22,18 +23,17 @@ def convert_to_adjlists(n, edges):
     adjlist = [ [] for _ in range(n) ]
     G = gh.Graph(n, False, True);
     for (x, y, _) in edges:
-        print((x, y))
         adjlist[x].append(y)
         G.costs.update({(x, y): 0})
     G.adjlists = adjlist
     return G
 
-def get_interesting_nodes(graph):
+def get_interesting_nodes(graph, edges):
     """
     Returns a list of nodes that are interesting to the drone.
     """
     res = []
-    P = find_maximum_matching(graph.order, convert_to_edges(graph))
+    P = find_maximum_matching(graph.order, edges)
     for (src,dst) in P:
         res.append(src)
         res.append(dst)
@@ -46,20 +46,20 @@ def find_node_edges(node, edges):
             res.append(x)
     return res
 
-def cleaning_graph(graph):
+def cleaning_graph(graph, edges):
     """
     Returns an optimal version of the interesting nodes.
     """
-    edges = convert_to_edges(graph)
+    # edges = convert_to_edges(graph)
     mark = [(None, None, 0)] * len(edges)
-    int_nodes = get_interesting_nodes(graph)
+    int_nodes = get_interesting_nodes(graph, edges)
     for node in int_nodes:
         for neigbors in graph.adjlists[node]:
             if (neigbors in int_nodes):
                 if (node, neigbors, 0) in edges:
                     mark[edges.index((node, neigbors, 0))] = (node, neigbors, 0)
                 else:
-                    mark[edges.index((neigbors, node, 0))] = (node, neigbors, 0)
+                    mark[edges.index((neigbors, node, 0))] = (neigbors, node, 0)
             else:
                 mark[edges.index((node, neigbors, 0))] = (node, None, 0)
     return supress_nodes(int_nodes, edges, mark)
@@ -74,7 +74,13 @@ def supress_nodes(int_nodes, edges, mark):
         flag = True # node will be unmarked if set to true
         for edge in node_edges:
             if None in mark[edges.index(edge)]: # if a node is single colored and not already in tokeep, we add it
-                tmp = mark[edges.index(edge)][0] if mark[edges.index(edge)][0] != None else mark[edges.index(edge)][1]
+                tmp = 0 # mark[edges.index(edge)][0] if mark[edges.index(edge)][0] != None else mark[edges.index(edge)][1]
+                if mark[edges.index(edge)][0] != None:
+                    tmp = mark[edges.index(edge)][0]
+                elif mark[edges.index(edge)][1] != None:
+                    mark[edges.index(edge)][1]
+                else:
+                    continue # in order to skip the (None, None) case
                 if not tmp in to_keep:
                     to_keep.append(tmp)
                 flag = False
@@ -128,11 +134,13 @@ def color_graph(osmgraph):
         tmp.append((node[0], node[1], 0))
     edges = to_soft_id_graph(tmp)
     g = convert_to_adjlists(len(osmgraph.nodes), edges);
-    cleaned = cleaning_graph(g)
+    # print("\n\ng.order:", g.order)
+    # print("\n\nnbedges:", len(edges))
+    cleaned = cleaning_graph(g, edges)
     int_nodes = find_best_path(cleaned, g)
     for node in int_nodes:
         for neigbors in g.adjlists[node]:
-            color = randint(0,1) # coloring the graph randomly
+            color = random.randint(0,1) # coloring the graph randomly
             g.costs.update({(node, neigbors): color})
     return g
 
@@ -201,8 +209,6 @@ def to_real_id_path(path_soft_id):
 
 place = "Montreal, Canada"
 G = ox.graph_from_place(place, network_type="drive")
-x = G.edges(data=True)
-# G3 = ox.truncate.truncate_graph_dist(G,17,max_dist=1000)
-color_graph(G)
+G1 = ox.truncate.truncate_graph_dist(G,17052729,max_dist=2000)
+color_graph(G1)
 # print(g.adjlists)
-
